@@ -1,7 +1,7 @@
 .idea
 .vscode
 
-
 **/*.pyc
 venv
+db.sqlite3
 
