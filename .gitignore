@@ -4,4 +4,6 @@
 **/*.pyc
 venv
 db.sqlite3
+staticfiles/*
+static_do_koncowego_projektu
 
