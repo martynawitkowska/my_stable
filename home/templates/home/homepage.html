@@ -1,13 +1,19 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>HOME</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block container %}
+
+<div>
+    <div class="row position-relative">
+        <div class="col-xl-auto"><img src="{% static 'images/horses-786239.jpeg' %}" class="img-fluid opacity-50" alt=""></div>
+        <div class="col-xl-auto position-absolute top-50 start-50 translate-middle text-center">
+            <h1>MY STABLE&trade;</h1>
+            <p>Give your workers information about horses in your stable. Plan feeding, training and more.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

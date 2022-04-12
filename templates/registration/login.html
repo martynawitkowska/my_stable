@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block container %}
+    <div class="container-lg mt-5 mb-5 p-5">
+        <div class="row mb-5 pb-4">
+
+        </div>
+        <div class="row justify-content-center mb-5">
+            <div class="col-4 mb-5 pb-5">
+                <form action="" method="POST" class="border border-3 p-4">
+                    {% csrf_token %}
+                    <h1>Login</h1>
+                    {{ form|crispy }}
+                    <button type="submit" class="btn" style="background-color: olivedrab">
+                        Login
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+
+        </div>
+    </div>
+{% endblock %}
+
+
