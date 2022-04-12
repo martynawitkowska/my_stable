@@ -3,3 +3,9 @@
     height: 2rem;
 }
 
+.form-border{
+    border-style: solid;
+    border-width: 3px;
+    border-color: olivedrab;
+    border-radius: 30px
+}
