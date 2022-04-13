@@ -51,8 +51,11 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'crispy_bootstrap5',
+    'address',
+
     # local apps
     'home.apps.HomeConfig',
+    'users.apps.UsersConfig',
 
 ]
 
@@ -154,3 +157,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_REDIRECT_URL = 'home:home'
 
 LOGOUT_REDIRECT_URL = 'home:home'
+
+GOOGLE_API_KEY = 'AIzaSyD--your-google-maps-key-SjQBE'
