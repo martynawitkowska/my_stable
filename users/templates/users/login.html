@@ -1,0 +1,25 @@
+{% extends 'base.html'%}
+{% load crispy_forms_filters %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block container %}
+    <form action="" method="post">
+    {% if form.errors %}
+        {% for error in form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>{{ error }}</strong> You should check in on some of those fields below.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% csrf_token %}
+    <h1>Login</h1>
+    {{ form|crispy }}
+    <p>Don't have an account?<a href=""> Signup</a></p>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

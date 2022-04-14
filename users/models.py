@@ -7,7 +7,7 @@ from . import enums
 
 
 class CustomAccountManager(BaseUserManager):
-    def create_user(self, first_name, last_name, company_name, email, address, password=None):
+    def create_user(self, first_name, last_name, company_name, email, address, user_type, password=None):
         if not email:
             raise ValueError('You must provide an email')
         user = self.model(
@@ -15,7 +15,8 @@ class CustomAccountManager(BaseUserManager):
             first_name=first_name,
             last_name=last_name,
             company_name=company_name,
-            address=address
+            address=address,
+            user_type=user_type,
         )
         user.set_password(password)
         user.is_active = True
@@ -80,4 +81,5 @@ class Address(models.Model):
     city = models.CharField(max_length=60)
     country = models.CharField(max_length=20, choices=pytz.country_names.items())
     postal_code = models.CharField(max_length=6)
+    user = models.ForeignKey('Account', on_delete=models.PROTECT, related_name='address')
 

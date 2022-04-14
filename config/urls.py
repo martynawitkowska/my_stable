@@ -16,12 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+import users
 from config import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('home.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('', include('users.urls')),
 ]
 
 if settings.DEBUG:
