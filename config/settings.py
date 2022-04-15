@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     # local apps
     'home.apps.HomeConfig',
     'users.apps.UsersConfig',
+    'horses.apps.HorsesConfig',
 
 ]
 

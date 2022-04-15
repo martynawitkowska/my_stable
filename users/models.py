@@ -81,5 +81,4 @@ class Address(models.Model):
     city = models.CharField(max_length=60)
     country = models.CharField(max_length=20, choices=pytz.country_names.items())
     postal_code = models.CharField(max_length=6)
-    user = models.ForeignKey('Account', on_delete=models.PROTECT, related_name='address')
 
