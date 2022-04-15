@@ -51,8 +51,11 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'crispy_bootstrap5',
+
     # local apps
     'home.apps.HomeConfig',
+    'users.apps.UsersConfig',
+    'horses.apps.HorsesConfig',
 
 ]
 
@@ -152,5 +155,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = 'home:home'
-
 LOGOUT_REDIRECT_URL = 'home:home'
+
+AUTH_USER_MODEL = 'users.Account'
