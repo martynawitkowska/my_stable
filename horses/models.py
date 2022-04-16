@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from . import enums
@@ -14,12 +15,62 @@ class Horse(models.Model):
     picture = models.ImageField()
 
 
+class Stable(models.Model):
+    name = models.CharField(max_length=120)
+    owner = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
+    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
+    stalls_quantity = models.IntegerField()
+
+
 class Training(models.Model):
     weekday = models.SmallIntegerField(choices=enums.WeekDays.CHOICES, default=0)
-    horse = models.ManyToManyField('Horse', on_delete=models.PROTECT, related_name='Trainings')
-    horse_bit = models.ManyToManyField('HorseBits', on_delete=models.PROTECT, related_name='Trainings')
+    horse = models.ManyToManyField('Horse', related_name='Trainings')
+    horse_bit = models.ManyToManyField('HorseBits', related_name='Trainings')
     description = models.TextField()
     trainer = models.CharField(max_length=64)
     duration = models.DurationField()
     hour = models.TimeField()
 
+
+class HorseBits(models.Model):
+    name = models.CharField(max_length=64)
+    image = models.ImageField()
+
+
+class Feeding(models.Model):
+    horse = models.ForeignKey('Horse', on_delete=models.PROTECT, related_name='feeding_plans')
+    meal = models.SmallIntegerField(choices=enums.Meals.CHOICES, default=0)
+    description = models.TextField()
+
+
+class HorseFarrier(models.Model):
+    farrier = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
+    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
+
+
+class HorseVet(models.Model):
+    vet = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
+    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
+
+
+class VetAppointment(models.Model):
+    vet = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
+    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
+    day = models.DateTimeField()
+
+
+class FarrierAppointment(models.Model):
+    farrier = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
+    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
+    day = models.DateTimeField()
+
+
+class Vaccines(models.Model):
+    name = models.CharField(max_length=64)
+    description = models.TextField()
+
+
+class VaccinesDates(models.Model):
+    shot = models.ManyToManyField('Vaccines', related_name='vaccines')
+    horse = models.ManyToManyField('Horse', related_name='horses')
+    date = models.DateField()

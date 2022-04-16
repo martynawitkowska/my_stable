@@ -18,3 +18,17 @@ class WeekDays:
         (SATURDAY, 'Saturday'),
         (SUNDAY, 'Sunday'),
     )
+
+
+class Meals:
+    OPTION = 0
+    BREAKFAST = 1
+    DINNER = 2
+    SUPPER = 3
+
+    CHOICES = (
+        (OPTION, 'Choose a meal'),
+        (BREAKFAST, 'Breakfast'),
+        (DINNER, 'Dinner'),
+        (SUPPER, 'Supper'),
+    )
