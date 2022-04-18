@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-import users
 from config import settings
 
 urlpatterns = [
@@ -24,6 +23,7 @@ urlpatterns = [
     path('', include('home.urls')),
     path('', include('django.contrib.auth.urls')),
     path('', include('users.urls')),
+    path('', include('horses.urls')),
 ]
 
 if settings.DEBUG:

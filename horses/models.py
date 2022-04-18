@@ -13,6 +13,11 @@ class Horse(models.Model):
     stall = models.IntegerField()
     owner = models.CharField(max_length=64)
     picture = models.ImageField()
+    farrier = models.ManyToManyField(get_user_model(), related_name='f_horses')
+    vet = models.ManyToManyField(get_user_model(), related_name='v_horses')
+
+    def __str__(self):
+        return self.name
 
 
 class Stable(models.Model):
@@ -41,16 +46,6 @@ class Feeding(models.Model):
     horse = models.ForeignKey('Horse', on_delete=models.PROTECT, related_name='feeding_plans')
     meal = models.SmallIntegerField(choices=enums.Meals.CHOICES, default=0)
     description = models.TextField()
-
-
-class HorseFarrier(models.Model):
-    farrier = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
-    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
-
-
-class HorseVet(models.Model):
-    vet = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
-    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
 
 
 class VetAppointment(models.Model):

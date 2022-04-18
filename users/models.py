@@ -30,17 +30,18 @@ class CustomAccountManager(BaseUserManager):
             user.groups.add(farrier_group)
             return user
         elif user.user_type == 3:
-            stable_owners_group = Group.objects.get('stable owners')
+            stable_owners_group = Group.objects.get('stable_owners')
             user.groups.add(stable_owners_group)
             return user
 
-    def create_superuser(self, first_name, last_name, company_name, email, address, password=None):
+    def create_superuser(self, first_name, last_name, company_name, email, address, user_type, password=None):
         user = self.create_user(
             first_name=first_name,
             last_name=last_name,
             company_name=company_name,
-            email=email,
+            email=self.normalize_email(email),
             address=address,
+            user_type=user_type,
             password=password,
         )
 
@@ -58,7 +59,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     company_name = models.CharField(max_length=120)
     email = models.EmailField(max_length=70, unique=True, verbose_name='email')
     address = models.ForeignKey('Address', on_delete=models.PROTECT, related_name='accounts')
-    user_type = models.SmallIntegerField(choices=enums.UserType.CHOICES, default=0)
+    user_type = models.SmallIntegerField(choices=enums.UserType.CHOICES, null=True, default=0)
     date_join = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login = models.DateTimeField(verbose_name='last login', null=True)
     is_active = models.BooleanField(default=False)

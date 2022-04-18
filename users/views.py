@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Permission, Group
 from django.shortcuts import render, redirect, get_object_or_404
@@ -44,19 +46,13 @@ def registration_view(request):
             user.is_active = True
             user.save()
             if form1.cleaned_data['Stable owner'] == 'Stable owner':
-                permission = Permission.objects.get(name='Can add horses')
-                stable_owners_group = Group.objects.get(name='stable owners')
+                stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
                 user.groups.add(stable_owners_group)
-                user.user_permissions.add(permission)
             elif form1.cleaned_data['Vet'] == 'Vet':
-                permission = Permission.objects.get(name='Can add an appointments')
-                veterinarians_group = Group.objects.get('veterinarians')
+                veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
                 user.groups.add(veterinarians_group)
-                user.user_permissions.add(permission)
             elif form1.cleaned_data['Farrier'] == 'Farrier':
-                permission = Permission.objects.get(name='Can add appointments')
-                farriers_group = Group.objects.get('farriers')
+                farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
                 user.groups.add(farriers_group)
-                user.user_permissions.add(permission)
         return redirect(reverse_lazy('users:login'))
     return render(request, 'users/registration.html', {'form1': form1, 'form2': form2})
