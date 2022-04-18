@@ -12,7 +12,7 @@ class Horse(models.Model):
     age = models.SmallIntegerField()
     stall = models.IntegerField()
     owner = models.CharField(max_length=64)
-    picture = models.ImageField()
+    picture = models.ImageField(upload_to='images')
     farrier = models.ManyToManyField(get_user_model(), related_name='f_horses')
     vet = models.ManyToManyField(get_user_model(), related_name='v_horses')
 
