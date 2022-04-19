@@ -12,8 +12,13 @@
         <li class="nav-item me-4">
           <a class="nav-link " aria-current="page" href="{% url 'home:home' %}">Home</a>
         </li>
-        <li class="nav-item me-4">
-          <a class="nav-link" href="{% url 'horses:stable' user.id %}">Stable</a>
+        <li class="nav-item me-4 dropdown">
+          <a class="nav-link dropdown-toggle" role="button" href="" data-bs-toggle="dropdown" aria-expanded="false">Stable</a>
+            <ul class="dropdown-menu" style="background-color: olivedrab">
+                <li><a class="dropdown-item" href="{% url 'horses:stable' user.id %}">Stable</a></li>
+                <li><a class="dropdown-item" href="{% url 'horses:add_horse' %}">Add horse</a></li>
+                <li><a class="dropdown-item" href="{% url 'horses:add_stable' %}">Add stable</a></li>
+            </ul>
         </li>
         <li class="nav-item me-4">
           <a class="nav-link" href="#">Vet</a>

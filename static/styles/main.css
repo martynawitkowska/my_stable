@@ -14,3 +14,15 @@
     max-width: 10%;
     height: auto;
 }
+
+.image {
+    width: auto;
+    height: 350px;
+}
+.cover{
+  object-fit: cover;
+  object-position: center;
+}
+.contain{
+  object-fit: contain;
+}
