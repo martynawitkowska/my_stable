@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Your Stable
+{% endblock %}
+
+{% block container %}
+<div class="container-fluid mt-3">
+    <div>
+        <h1>{{ stable.name }}</h1>
+    </div>
+    <div class="row">
+        {% for horse in horses %}
+                <div class="col-md-3">
+                    <div class="card mb-2 me-2 " style="width: 15rem;">
+                        <img src="{{ horse.horse.picture.url }}" class="card-img-top" style="width:auto ;height: 350px; object-fit: cover; object-position: center;" alt="Picture of {{ horse.horse }}">
+                        <div class="card-footer d-flex flex-column">
+                            <a href="#" class="btn btn-lg " style="background-color: olivedrab">{{ horse.horse }}</a>
+                        </div>
+                    </div>
+            </div>
+        {% endfor %}
+    </div>
+<a href="{% url 'horses:add_horse' %}" class="btn mb-2" style="background-color: olivedrab">Add Horse</a>
+</div>
+{% endblock %}

@@ -6,6 +6,7 @@ venv
 db.sqlite3
 
 staticfiles/*
+media/images
 static_do_koncowego_projektu
 
 env/.env

@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 # from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView
+from django.views import View
+
 
 from . import forms, models
 
@@ -29,6 +30,11 @@ def add_stable_view(request):
     return render(request, 'horses/add_stable.html', {'form': form})
 
 
-class UserProfileView(LoginRequiredMixin, ListView):
-    model = models.Stable
-    template_name =
+class StableView(LoginRequiredMixin, View):
+    def get(self, request, owner_id):
+        horses = models.Stable.objects.select_related('horse')
+        stable = models.Stable.objects.filter(owner_id=owner_id)
+
+        return render(request, 'horses/stable.html', context={'horses': horses, 'stable': stable})
+
+

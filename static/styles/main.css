@@ -9,3 +9,8 @@
     border-color: olivedrab;
     border-radius: 30px
 }
+
+.picture-resize {
+    max-width: 10%;
+    height: auto;
+}

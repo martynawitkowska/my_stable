@@ -13,7 +13,7 @@
           <a class="nav-link " aria-current="page" href="{% url 'home:home' %}">Home</a>
         </li>
         <li class="nav-item me-4">
-          <a class="nav-link" href="#">Stable</a>
+          <a class="nav-link" href="{% url 'horses:stable' user.id %}">Stable</a>
         </li>
         <li class="nav-item me-4">
           <a class="nav-link" href="#">Vet</a>
@@ -23,8 +23,12 @@
         </li>
           <li class="nav-item me-2">
               {% if user.is_authenticated %}
-              <a class="nav-link" href="">Profile: {{ user }}</a>
+                  <li>
+                     <a class="nav-link" href="">Profile: {{ user }}</a>
+                  </li>
+                  <li>
               <a class="nav-link" href="{% url 'users:logout' %}">Logout</a>
+                      </li>
               {% else  %}
                   <li>
                     <a class="nav-link position-relative" href="{% url 'users:login' %}">Login</a>
