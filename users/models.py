@@ -76,7 +76,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     objects = CustomAccountManager()
 
     def __str__(self):
-        return self.company_name
+        return self.email
 
 
 class Address(models.Model):

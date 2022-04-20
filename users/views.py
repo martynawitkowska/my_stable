@@ -43,13 +43,13 @@ def registration_view(request):
             user.address = Address.objects.latest('id')
             user.is_active = True
             user.save()
-            if form1.cleaned_data['user_type'] == 'stable owner':
+            if form1.cleaned_data['user_type'] == 3:
                 stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
                 user.groups.add(stable_owners_group)
-            elif form1.cleaned_data['user_type'] == 'Vet':
+            elif form1.cleaned_data['user_type'] == 1:
                 veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
                 user.groups.add(veterinarians_group)
-            elif form1.cleaned_data['user_type'] == 'Farrier':
+            elif form1.cleaned_data['user_type'] == 2:
                 farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
                 user.groups.add(farriers_group)
         return redirect(reverse_lazy('users:login'))
