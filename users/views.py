@@ -10,9 +10,8 @@ from .models import Address
 
 
 def login_user_view(request):
+    form = forms.LoginForm(request, request.POST)
     if request.method == 'POST':
-        form = forms.LoginForm(request, request.POST)
-
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -26,7 +25,7 @@ def login_user_view(request):
     else:
         form = forms.LoginForm()
 
-        return render(request, 'users/login.html', {'form': form})
+    return render(request, 'users/login.html', {'form': form})
 
 
 def logout_user(request):
@@ -41,18 +40,17 @@ def registration_view(request):
         if form1.is_valid() and form2.is_valid():
             form2.save()
             user = form1.save(commit=False)
-            address = Address.objects.latest('id')
-            user.address = address
+            user.address = Address.objects.latest('id')
             user.is_active = True
             user.save()
-            # if form1.cleaned_data['Stable owner'] == 'stable owner':
-            #     stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
-            #     user.groups.add(stable_owners_group)
-            # elif form1.cleaned_data['Vet'] == 'Vet':
-            #     veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
-            #     user.groups.add(veterinarians_group)
-            # elif form1.cleaned_data['Farrier'] == 'Farrier':
-            #     farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
-            #     user.groups.add(farriers_group)
+            if form1.cleaned_data['user_type'] == 'stable owner':
+                stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
+                user.groups.add(stable_owners_group)
+            elif form1.cleaned_data['user_type'] == 'Vet':
+                veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
+                user.groups.add(veterinarians_group)
+            elif form1.cleaned_data['user_type'] == 'Farrier':
+                farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
+                user.groups.add(farriers_group)
         return redirect(reverse_lazy('users:login'))
     return render(request, 'users/registration.html', {'form1': form1, 'form2': form2})
