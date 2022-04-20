@@ -1,13 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.views import View
 
 
 from . import forms, models
 
 
+@login_required
+@permission_required('horse.add_horse', raise_exception=True)
 def add_horse_view(request):
     form = forms.AddHorseForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
@@ -19,6 +21,8 @@ def add_horse_view(request):
     return render(request, 'horses/add_horse.html', {'form': form})
 
 
+@login_required
+@permission_required('stable.add_stable', raise_exception=True)
 def add_stable_view(request):
     form = forms.AddStableForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':

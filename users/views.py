@@ -2,7 +2,7 @@ import os
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Permission, Group
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
 from . import forms
@@ -45,14 +45,14 @@ def registration_view(request):
             user.address = address
             user.is_active = True
             user.save()
-            if form1.cleaned_data['Stable owner'] == 'Stable owner':
-                stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
-                user.groups.add(stable_owners_group)
-            elif form1.cleaned_data['Vet'] == 'Vet':
-                veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
-                user.groups.add(veterinarians_group)
-            elif form1.cleaned_data['Farrier'] == 'Farrier':
-                farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
-                user.groups.add(farriers_group)
+            # if form1.cleaned_data['Stable owner'] == 'stable owner':
+            #     stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
+            #     user.groups.add(stable_owners_group)
+            # elif form1.cleaned_data['Vet'] == 'Vet':
+            #     veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
+            #     user.groups.add(veterinarians_group)
+            # elif form1.cleaned_data['Farrier'] == 'Farrier':
+            #     farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
+            #     user.groups.add(farriers_group)
         return redirect(reverse_lazy('users:login'))
     return render(request, 'users/registration.html', {'form1': form1, 'form2': form2})
