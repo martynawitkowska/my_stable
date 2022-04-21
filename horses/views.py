@@ -9,7 +9,7 @@ from . import forms, models
 
 
 @login_required
-@permission_required('horse.add_horse', raise_exception=True)
+@permission_required('add_horse', raise_exception=True)
 def add_horse_view(request):
     form = forms.AddHorseForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':

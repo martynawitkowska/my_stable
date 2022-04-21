@@ -1,7 +1,7 @@
 import os
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Permission, Group
+from django.contrib.auth.models import Group, Permission
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
@@ -10,8 +10,9 @@ from .models import Address
 
 
 def login_user_view(request):
-    form = forms.LoginForm(request, request.POST)
     if request.method == 'POST':
+        form = forms.LoginForm(request, request.POST)
+
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
@@ -46,6 +47,8 @@ def registration_view(request):
             if form1.cleaned_data['user_type'] == 3:
                 stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
                 user.groups.add(stable_owners_group)
+                permission = Permission.objects.get(codename='add_horse')
+                user.user_permissions.add(permission)
             elif form1.cleaned_data['user_type'] == 1:
                 veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
                 user.groups.add(veterinarians_group)
