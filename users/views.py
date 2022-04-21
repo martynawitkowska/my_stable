@@ -47,13 +47,17 @@ def registration_view(request):
             if form1.cleaned_data['user_type'] == 3:
                 stable_owners_group = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
                 user.groups.add(stable_owners_group)
-                permission = Permission.objects.get(codename='add_horse')
-                user.user_permissions.add(permission)
+                permissions = stable_owners_group.permissions.all()
+                user.user_permissions.set(permissions)
             elif form1.cleaned_data['user_type'] == 1:
                 veterinarians_group = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
                 user.groups.add(veterinarians_group)
+                permissions = veterinarians_group.permissions.all()
+                user.user_permissions.set(permissions)
             elif form1.cleaned_data['user_type'] == 2:
                 farriers_group = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
                 user.groups.add(farriers_group)
+                permissions = farriers_group.permissions.all()
+                user.user_permissions.set(permissions)
         return redirect(reverse_lazy('users:login'))
     return render(request, 'users/registration.html', {'form1': form1, 'form2': form2})
