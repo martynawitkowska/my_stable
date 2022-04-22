@@ -7,7 +7,7 @@ from django.views import View
 from . import forms, models
 
 
-@login_required
+@login_required(login_url='users:login')
 @permission_required('horses.add_horse', login_url='users:login')
 def add_horse_view(request):
     form = forms.AddHorseForm(request.POST or None, request.FILES or None)
@@ -22,7 +22,7 @@ def add_horse_view(request):
     return render(request, 'horses/add_horse.html', {'form': form})
 
 
-@login_required
+@login_required(login_url='users:login')
 @permission_required('horses.add_stable', raise_exception=True)
 def add_stable_view(request):
     form = forms.AddStableForm(request.POST or None, request.FILES or None)
@@ -38,10 +38,14 @@ def add_stable_view(request):
 
 
 class StableView(LoginRequiredMixin, View):
-    def get(self, request, user_id):
-        horses = models.Horse.objects.filter(stable_owner=user_id)
-        stable = models.Stable.objects.get(owner=user_id)
+    login_url = reverse_lazy('users:login')
 
-        return render(request, 'horses/stable.html', context={'horses': horses, 'stable': stable})
+    def get(self, request, user_id):
+        if models.Stable.objects.filter(owner_id=user_id).exists():
+            horses = models.Horse.objects.filter(stable_owner=user_id)
+            stable = models.Stable.objects.get(owner=user_id)
+            return render(request, 'horses/stable.html', context={'horses': horses, 'stable': stable})
+        else:
+            return redirect(reverse_lazy('horses:add_stable'))
 
 

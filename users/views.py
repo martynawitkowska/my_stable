@@ -1,10 +1,11 @@
 import os
 
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
+from horses.models import Stable
 from . import forms
 from .models import Address
 
@@ -21,8 +22,8 @@ def login_user_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    # TODO change redirect to corresponding user profile
                     return redirect(reverse_lazy('home:home'))
+
     else:
         form = forms.LoginForm()
 

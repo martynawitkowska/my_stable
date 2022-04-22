@@ -1,5 +1,6 @@
 import pytest
 from users.models import Address
+from horses.models import Horse, Stable
 
 
 @pytest.fixture(scope='function')
@@ -26,3 +27,27 @@ def user(db, django_user_model):
         address=address,
     )
     yield user
+
+
+@pytest.fixture(scope='function')
+def horse(db):
+    horse = Horse.objects.create(
+        name='Hima',
+        mother='Hestia',
+        father='Davos',
+        birth_date='2010-03-07',
+        age=6,
+        stall=3,
+        horse_owner='Olga Makowska',
+    )
+    yield horse
+
+
+@pytest.fixture(scope='function')
+def stable(db):
+    stable = Stable.objects.create(
+        name='My Stable',
+        description='Horses are happy here.',
+        stalls_quantity=20,
+    )
+    yield stable

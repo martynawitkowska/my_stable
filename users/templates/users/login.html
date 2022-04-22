@@ -1,5 +1,5 @@
 {% extends 'base.html'%}
-{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 {% block title %}
     Login
@@ -25,7 +25,9 @@
                 <h1>Login</h1>
                 {{ form|crispy }}
                 <p>Don't have an account?<a href="{% url 'users:register' %}"> Signup</a></p>
-                <button type="submit" class="btn" style="background-color: olivedrab">Login</button>
+                <button type="submit" class="btn" style="background-color: olivedrab">
+                    Login
+                </button>
             </form>
         </div>
     </div>

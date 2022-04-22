@@ -15,6 +15,10 @@ class AddHorseForm(forms.ModelForm):
                   'horse_owner', 'picture', 'farrier', 'vet')
         widgets = {'birth_date': DateInput()}
 
+    def __init__(self, *args, **kwargs):
+        super(AddHorseForm, self).__init__(*args, **kwargs)
+        self.fields['picture'].required = False
+
 
 class AddStableForm(forms.ModelForm):
 

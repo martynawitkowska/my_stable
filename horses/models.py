@@ -13,9 +13,9 @@ class Horse(models.Model):
     stall = models.IntegerField()
     stable_owner = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.PROTECT)
     horse_owner = models.CharField(max_length=125, null=True)
-    picture = models.ImageField(upload_to='images')
-    farrier = models.ManyToManyField(get_user_model(), related_name='f_horses')
-    vet = models.ManyToManyField(get_user_model(), related_name='v_horses')
+    picture = models.ImageField(upload_to='images', default='images/my_stb_def.jpg', null=True)
+    farrier = models.ManyToManyField(get_user_model(), related_name='f_horses', null=True)
+    vet = models.ManyToManyField(get_user_model(), related_name='v_horses', null=True)
 
     def __str__(self):
         return self.name
@@ -23,7 +23,7 @@ class Horse(models.Model):
 
 class Stable(models.Model):
     name = models.CharField(max_length=120)
-    owner = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
+    owner = models.ForeignKey(get_user_model(), null=True, related_name='%(class)s_related', on_delete=models.PROTECT)
     description = models.TextField()
     stalls_quantity = models.IntegerField()
 

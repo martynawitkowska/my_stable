@@ -76,7 +76,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     objects = CustomAccountManager()
 
     def __str__(self):
-        return self.email
+        return self.company_name
 
 
 class Address(models.Model):
@@ -87,3 +87,5 @@ class Address(models.Model):
     country = models.CharField(max_length=20, choices=pytz.country_names.items())
     postal_code = models.CharField(max_length=6)
 
+    def __str__(self):
+        return f'{self.street} {self.city}'

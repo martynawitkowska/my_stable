@@ -3,17 +3,12 @@ from django.apps import AppConfig
 from django.db.models.signals import post_migrate
 
 
-def create_groups(sender, **kwargs):
+def add_permissions(sender, **kwargs):
     from django.contrib.auth.models import Group, Permission
 
-    stable_owners = Group(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
-    stable_owners.save()
-
-    veterinarians = Group(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
-    veterinarians.save()
-
-    farriers = Group(name=os.environ.get('DJ_GROUP_FARRIERS'))
-    farriers.save()
+    stable_owners = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
+    veterinarians = Group.objects.get(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
+    farriers = Group.objects.get(name=os.environ.get('DJ_GROUP_FARRIERS'))
 
     add_horse = Permission.objects.get(codename='add_horse')
     add_training = Permission.objects.get(codename='add_training')
@@ -63,4 +58,4 @@ class HorsesConfig(AppConfig):
     name = 'horses'
 
     def ready(self):
-        post_migrate.connect(create_groups, sender=self)
+        post_migrate.connect(add_permissions, sender=self)
