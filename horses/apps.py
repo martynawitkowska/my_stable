@@ -1,6 +1,66 @@
+import os
 from django.apps import AppConfig
+from django.db.models.signals import post_migrate
+
+
+def create_groups(sender, **kwargs):
+    from django.contrib.auth.models import Group, Permission
+
+    stable_owners = Group(name=os.environ.get('DJ_GROUP_STB_OWNERS'))
+    stable_owners.save()
+
+    veterinarians = Group(name=os.environ.get('DJ_GROUP_VETERINARIANS'))
+    veterinarians.save()
+
+    farriers = Group(name=os.environ.get('DJ_GROUP_FARRIERS'))
+    farriers.save()
+
+    add_horse = Permission.objects.get(codename='add_horse')
+    add_training = Permission.objects.get(codename='add_training')
+    add_stable = Permission.objects.get(codename='add_stable')
+    change_training = Permission.objects.get(codename='change_training')
+    change_horse = Permission.objects.get(codename='change_horse')
+    add_feeding = Permission.objects.get(codename='add_feeding')
+    change_feeding = Permission.objects.get(codename='change_feeding')
+    view_farrierappointment = Permission.objects.get(codename='view_farrierappointment')
+    view_vetappointment = Permission.objects.get(codename='view_vetappointment')
+    view_stable = Permission.objects.get(codename='view_stable')
+    view_horse = Permission.objects.get(codename='view_horse')
+    add_v_appointment = Permission.objects.get(codename='add_vetappointment')
+    add_f_appointment = Permission.objects.get(codename='add_farrierappointment')
+
+    stable_owner_permissions = [
+        add_horse,
+        change_horse,
+        add_training,
+        add_stable,
+        change_training,
+        add_feeding,
+        change_feeding,
+        view_vetappointment,
+        view_farrierappointment,
+    ]
+
+    vet_permissions = [
+        add_v_appointment,
+        view_stable,
+        view_horse,
+    ]
+
+    farrier_permissions = [
+        add_f_appointment,
+        view_stable,
+        view_horse,
+    ]
+
+    stable_owners.permissions.set(stable_owner_permissions)
+    veterinarians.permissions.set(vet_permissions)
+    farriers.permissions.set(farrier_permissions)
 
 
 class HorsesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'horses'
+
+    def ready(self):
+        post_migrate.connect(create_groups, sender=self)
