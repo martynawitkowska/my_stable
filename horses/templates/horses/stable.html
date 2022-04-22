@@ -13,9 +13,9 @@
         {% for horse in horses %}
                 <div class="col-md-3">
                     <div class="card mb-2 me-2 " style="width: 15rem;">
-                        <img src="{{ horse.horse.picture.url }}" class="card-img-top" style="width:auto ;height: 350px; object-fit: cover; object-position: center;" alt="Picture of {{ horse.horse }}">
+                        <img src="{{ horse.picture.url }}" class="card-img-top" style="width:auto ;height: 350px; object-fit: cover; object-position: center;" alt="Picture of {{ horse.name }}">
                         <div class="card-footer d-flex flex-column">
-                            <a href="#" class="btn btn-lg " style="background-color: olivedrab">{{ horse.horse }}</a>
+                            <a href="#" class="btn btn-lg " style="background-color: olivedrab">{{ horse.name }}</a>
                         </div>
                     </div>
             </div>

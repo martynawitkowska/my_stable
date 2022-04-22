@@ -11,7 +11,8 @@ class Horse(models.Model):
     birth_date = models.DateField()
     age = models.SmallIntegerField()
     stall = models.IntegerField()
-    owner = models.CharField(max_length=64)
+    stable_owner = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.PROTECT)
+    horse_owner = models.CharField(max_length=125, null=True)
     picture = models.ImageField(upload_to='images')
     farrier = models.ManyToManyField(get_user_model(), related_name='f_horses')
     vet = models.ManyToManyField(get_user_model(), related_name='v_horses')
@@ -23,21 +24,27 @@ class Horse(models.Model):
 class Stable(models.Model):
     name = models.CharField(max_length=120)
     owner = models.ForeignKey(get_user_model(), related_name='%(class)s_related', on_delete=models.PROTECT)
-    horse = models.ForeignKey('Horse', related_name='%(class)s_related', on_delete=models.PROTECT)
+    description = models.TextField()
     stalls_quantity = models.IntegerField()
+
+    def __str__(self):
+        return self.name
 
 
 class Training(models.Model):
     weekday = models.SmallIntegerField(choices=enums.WeekDays.CHOICES, default=0)
     horse = models.ManyToManyField('Horse', related_name='Trainings')
-    horse_bit = models.ManyToManyField('HorseBits', related_name='Trainings')
+    horse_bit = models.ManyToManyField('BitsToUse', related_name='Trainings')
     description = models.TextField()
     trainer = models.CharField(max_length=64)
     duration = models.DurationField()
     hour = models.TimeField()
 
+    def __str__(self):
+        return self.weekday
 
-class HorseBits(models.Model):
+
+class BitsToUse(models.Model):
     name = models.CharField(max_length=64)
     image = models.ImageField()
 

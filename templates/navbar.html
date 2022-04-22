@@ -20,7 +20,7 @@
                                 <a class="nav-link dropdown-toggle" role="button" href="" data-bs-toggle="dropdown"
                                    aria-expanded="false">Stable</a>
                                 <ul class="dropdown-menu" style="background-color: olivedrab">
-                                    <li><a class="dropdown-item" href="{% url 'horses:stable' user.id %}">Stable</a>
+                                    <li><a class="dropdown-item" href="{% url 'horses:stable' request.user.id %}">Stable</a>
                                     </li>
                                     <li><a class="dropdown-item" href="{% url 'horses:add_horse' %}">Add horse</a></li>
                                     <li><a class="dropdown-item" href="{% url 'horses:add_stable' %}">Add stable</a>
