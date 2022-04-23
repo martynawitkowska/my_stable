@@ -4,6 +4,11 @@ from django.db.models.signals import post_migrate
 
 
 def add_permissions(sender, **kwargs):
+    """
+    A function to automatically add permissions to groups that are created
+    in users/migrations/0002_create_groups.py It is placed in horses/apps.py,
+    because it runs after post migration signal, and all permissions are in database to get.
+    """
     from django.contrib.auth.models import Group, Permission
 
     stable_owners = Group.objects.get(name=os.environ.get('DJ_GROUP_STB_OWNERS'))

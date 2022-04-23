@@ -5,7 +5,6 @@ from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 
-from horses.models import Stable
 from . import forms
 from .models import Address
 
@@ -22,6 +21,7 @@ def login_user_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    # TODO After logging in user should be redirected to stable view of user
                     return redirect(reverse_lazy('home:home'))
 
     else:
@@ -36,8 +36,14 @@ def logout_user(request):
 
 
 def registration_view(request):
+    """
+    View for user registration. Unfortunately it is not as simple as I wanted it to be
+    so this is a work in progress. There are to many fields to fill out. Most of those
+    field should be optional with possibility to edit the form later.
+    """
     form2 = forms.AddressForm(request.POST or None, request.FILES or None)
     form1 = forms.RegistrationForm(request.POST or None, request.FILES or None)
+    # TODO check if there is a way to differently assign permissions to users code is a mess.
     if request.method == 'POST':
         if form1.is_valid() and form2.is_valid():
             form2.save()
