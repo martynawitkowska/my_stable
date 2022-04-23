@@ -11,12 +11,19 @@ from . import forms, models, enums
 @login_required(login_url='users:login')
 @permission_required('horses.add_horse', login_url='users:login')
 def add_horse_view(request):
+    """
+    Form to add a horse. User has to fill out all fileds in order to add a horse.
+    When submit button is clicked user is redirected to homepage, this is
+    supposed to be changed in near future. User should be redirected to a just added
+    horse detail view in order to add more details like training, feeding etc.
+    """
     form = forms.AddHorseForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
             horse = form.save(commit=False)
             horse.stable_owner = request.user
             horse.save()
+            # TODO after adding a horse user should be redirected to a corresponding horse detail view
             return redirect(reverse_lazy('home:home'))
     else:
         form = forms.AddHorseForm()
@@ -26,12 +33,18 @@ def add_horse_view(request):
 @login_required(login_url='users:login')
 @permission_required('horses.add_stable', raise_exception=True)
 def add_stable_view(request):
+    """
+     Form to add a stable. User has to fill out all fields in order to add a stable.
+    After submitting the form user should be redirected to a stable view to start
+    adding horses to the stable
+    """
     form = forms.AddStableForm(request.POST or None, request.FILES or None)
     if request.method == 'POST':
         if form.is_valid():
             stable = form.save(commit=False)
             stable.owner = request.user
             stable.save()
+            # TODO after adding stable user should be redirected to a corresponding stable view
             return redirect(reverse_lazy('home:home'))
     else:
         form = forms.AddStableForm()
@@ -39,6 +52,12 @@ def add_stable_view(request):
 
 
 class StableView(LoginRequiredMixin, View):
+    """
+    View of stable. Only LoginRequiredMixin is used to allow other users see the profile
+    and see the details of horses. It is important to give access to other users groups.
+    When user clicks in a field with a name of horse than it redirects to a corresponding
+    horse detail view.
+    """
     login_url = reverse_lazy('users:login')
 
     def get(self, request, user_id):
@@ -51,11 +70,19 @@ class StableView(LoginRequiredMixin, View):
 
 
 class HorseDetailView(DetailView, LoginRequiredMixin):
+    """
+    This is a place where user can see details of horse. It is a work in progress page
+    so queries are not perfect yet. Honestly it is a mess now.
+    """
     login_url = reverse_lazy('users:login')
     model = models.Horse
     context_object_name = 'horse'
 
     def get_context_data(self, **kwargs):
+        """
+        Overridden get_context_data method to pass queries for view.
+        """
+        # TODO When there is no data corresponding to user the queries are causing an error. JUST FIX IT!!!
         context = super(HorseDetailView, self).get_context_data(**kwargs)
         context['meal1'] = models.Feeding.objects.all().filter(horse=self.object, meal=1).latest('date_created')
         context['meal2'] = models.Feeding.objects.all().filter(horse=self.object, meal=2).latest('date_created')
@@ -65,6 +92,10 @@ class HorseDetailView(DetailView, LoginRequiredMixin):
 
 
 class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+    """
+    A form view for adding one meal. In select field user can only choose a horse
+    that were added with a corresponding user ID.
+    """
     login_url = reverse_lazy('users:login')
     template_name = 'horses/add_meal.html'
     permission_required = 'horses.add_feeding'
@@ -73,9 +104,10 @@ class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     success_url = reverse_lazy('home:home')
 
     def get_form_kwargs(self):
+        """
+        Overridden get_form_kwargs method to pass request to form in order to
+        provide queryset information.
+        """
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
-
-    # def get_success_url(self):
-    #     return reverse_lazy('horses:horse_detail', kwargs={'horse': self.kwargs.get('slug')})
