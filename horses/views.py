@@ -1,10 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views import View
+from django.views.generic import DetailView, CreateView
 
-from . import forms, models
+from . import forms, models, enums
 
 
 @login_required(login_url='users:login')
@@ -49,3 +50,32 @@ class StableView(LoginRequiredMixin, View):
             return redirect(reverse_lazy('horses:add_stable'))
 
 
+class HorseDetailView(DetailView, LoginRequiredMixin):
+    login_url = reverse_lazy('users:login')
+    model = models.Horse
+    context_object_name = 'horse'
+
+    def get_context_data(self, **kwargs):
+        context = super(HorseDetailView, self).get_context_data(**kwargs)
+        context['meal1'] = models.Feeding.objects.all().filter(horse=self.object, meal=1).latest('date_created')
+        context['meal2'] = models.Feeding.objects.all().filter(horse=self.object, meal=2).latest('date_created')
+        context['meal3'] = models.Feeding.objects.all().filter(horse=self.object, meal=3).latest('date_created')
+        context['meal_names'] = enums.Meals.CHOICES
+        return context
+
+
+class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+    login_url = reverse_lazy('users:login')
+    template_name = 'horses/add_meal.html'
+    permission_required = 'horses.add_feeding'
+    form_class = forms.AddFeedingForm
+    context_object_name = 'horse'
+    success_url = reverse_lazy('home:home')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    # def get_success_url(self):
+    #     return reverse_lazy('horses:horse_detail', kwargs={'horse': self.kwargs.get('slug')})

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ horse.name }}
+{% endblock %}
+
+{% block container %}
+    <div class="container justify-content-center">
+        <div class="row p-5">
+            <div class="col">
+                <img class="float-start image form-border" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
+            </div>
+            <div class="col me-3 form-border">
+                <div class="row">
+                    <div class="row p-3">
+                        <h1 class="text-center">{{ horse.name }}</h1>
+                    </div>
+                    <div class="row text-center p-3">
+
+                        <h4>{{ horse.birth_date }}</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center p-3">
+                        <h3>{{ horse.mother }}</h3>
+                    </div>
+                    <div class="col text-center p-3">
+                        <h3>{{ horse.father }}</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col m form-border">
+                <div class="row p-3 text-center">
+                    {% for number, meal_name in meal_names %}
+                        {% if number ==  meal1.meal%}
+                        <h5>{{ meal_name }}</h5>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="row p-3 text-center">
+                    <h5>{{ meal1.description }}</h5>
+                </div>
+                <div class="row p-3 text-center">
+                    {% for number, meal_name in meal_names %}
+                        {% if number ==  meal2.meal%}
+                        <h5>{{ meal_name }}</h5>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="row p-3 text-center">
+                    <h5>{{ meal2.description }}</h5>
+                </div>
+                <div class="row p-3 text-center">
+                    {% for number, meal_name in meal_names %}
+                        {% if number ==  meal3.meal %}
+                            <h5>{{ meal_name }}</h5>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="row p-3 text-center">
+                    <h5>{{ meal3.description }}</h5>
+                </div>
+            </div>
+        </div>
+    <div class="row mb-5">
+    </div>
+    </div>
+{% endblock %}

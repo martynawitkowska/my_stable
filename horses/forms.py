@@ -25,3 +25,18 @@ class AddStableForm(forms.ModelForm):
     class Meta:
         model = models.Stable
         fields = ('name', 'description', 'stalls_quantity')
+
+
+class AddFeedingForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Feeding
+        fields = ['meal', 'description', 'horse']
+
+    def __init__(self, *args, **kwargs):
+        request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+        if request:
+            user = request.user
+            self.fields['horse'].queryset = models.Horse.objects.filter(stable_owner=user)
+

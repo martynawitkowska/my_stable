@@ -32,7 +32,7 @@ def test_add_horse_view_user_can_add_horse(user, client):
 def test_add_stable_view_user_can_add_stable(client, user):
     url = reverse('horses:add_stable')
     client.force_login(user)
-    response = client.post(url, data={
+    client.post(url, data={
         'name': 'Happy Horses',
         'description': 'Horses are happy here at our stable',
         'stalls_quantity': 12
