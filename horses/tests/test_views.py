@@ -28,6 +28,7 @@ def test_add_horse_view_user_can_add_horse(user, client):
     assert response.status_code == 302
     assert len(Horse.objects.all()) == 1
 
+
 @pytest.mark.django_db
 def test_add_stable_view_user_can_add_stable(client, user):
     url = reverse('horses:add_stable')
