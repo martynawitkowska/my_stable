@@ -1,5 +1,5 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: olivedrab">
+<nav class="navbar navbar-expand-lg navbar-light bg-success">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'home:home' %}">
             <img src="{% static 'images/logo.svg' %}" class="logo" alt="Logo">
@@ -19,7 +19,7 @@
                             <li class="nav-item me-4 dropdown">
                                 <a class="nav-link dropdown-toggle" role="button" href="" data-bs-toggle="dropdown"
                                    aria-expanded="false">Stable</a>
-                                <ul class="dropdown-menu" style="background-color: olivedrab">
+                                <ul class="dropdown-menu bg-success">
                                     <li><a class="dropdown-item" href="{% url 'horses:stable' request.user.id %}">Stable</a>
                                     </li>
                                     <li><a class="dropdown-item" href="{% url 'horses:add_horse' %}">Add horse</a></li>

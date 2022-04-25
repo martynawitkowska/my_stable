@@ -9,61 +9,48 @@
     <div class="container justify-content-center">
         <div class="row p-5">
             <div class="col">
-                <img class="float-start image form-border" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
+                <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
             </div>
-            <div class="col me-3 form-border">
-                <div class="row">
-                    <div class="row p-3">
-                        <h1 class="text-center">{{ horse.name }}</h1>
-                    </div>
-                    <div class="row text-center p-3">
-
-                        <h4>{{ horse.birth_date }}</h4>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col text-center p-3">
-                        <h3>{{ horse.mother }}</h3>
-                    </div>
-                    <div class="col text-center p-3">
-                        <h3>{{ horse.father }}</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col m form-border">
-                <div class="row p-3 text-center">
-                    {% for number, meal_name in meal_names %}
-                        {% if number ==  meal1.meal%}
-                        <h5>{{ meal_name }}</h5>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="row p-3 text-center">
-                    <h5>{{ meal1.description }}</h5>
-                </div>
-                <div class="row p-3 text-center">
-                    {% for number, meal_name in meal_names %}
-                        {% if number ==  meal2.meal%}
-                        <h5>{{ meal_name }}</h5>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="row p-3 text-center">
-                    <h5>{{ meal2.description }}</h5>
-                </div>
-                <div class="row p-3 text-center">
-                    {% for number, meal_name in meal_names %}
-                        {% if number ==  meal3.meal %}
-                            <h5>{{ meal_name }}</h5>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div class="row p-3 text-center">
-                    <h5>{{ meal3.description }}</h5>
-                </div>
-            </div>
+        <div class="col me-3 p-3">
+            <table class="table table-success table-borderless table-hover">
+                <th class="p-3 h1 text-center" colspan="2">
+                    {{ horse.name }}
+                </th>
+                <tr class="text-center h6">
+                    <td colspan="2">
+                        {{ horse.birth_date }}
+                    </td>
+                <tr>
+                    <td class="text-center p-3 h6" >
+                        {{ horse.mother }}
+                    </td>
+                    <td class="text-center p-3 h6">
+                        {{ horse.father }}
+                    </td>
+                </tr>
+            </table>
         </div>
-    <div class="row mb-5">
-    </div>
+        <div class="col">
+            <table class="m-3 p-5 text-center table table-borderless table-warning table-striped">
+            <th class="p-3 h5">Feeding plan</th>
+            {% for meal in feeding %}
+                <tr class="p-5 text-center">
+                    {% for number, meal_name in meal_names %}
+                        {% if number ==  meal.meal%}
+                        <td class="p-2 table-success h6">{{ meal_name }}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                <tr class="p-2 text-center">
+                    <td class="p-3">{{ meal.description }}</td>
+                </tr>
+                {% empty %}
+                <div class="m-5">
+                    <a href="{% url 'horses:add_meal' %}" class="btn" style="background-color: olivedrab">Add feeding plan for this horse</a>
+                </div>
+            {% endfor %}
+            </table>
+        </div>
+        </div>
     </div>
 {% endblock %}

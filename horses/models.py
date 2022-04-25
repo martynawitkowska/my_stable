@@ -15,8 +15,8 @@ class Horse(models.Model):
     stable_owner = models.ForeignKey(get_user_model(), null=True, blank=True, on_delete=models.PROTECT)
     horse_owner = models.CharField(max_length=125, null=True)
     picture = models.ImageField(upload_to='images', default='images/my_stb_def.jpg', null=True)
-    farrier = models.ManyToManyField(get_user_model(), related_name='f_horses', null=True)
-    vet = models.ManyToManyField(get_user_model(), related_name='v_horses', null=True)
+    farrier = models.ManyToManyField(get_user_model(), related_name='f_horses', blank=True)
+    vet = models.ManyToManyField(get_user_model(), related_name='v_horses', blank=True)
     slug = models.SlugField(null=True)
 
     def __str__(self):
@@ -67,6 +67,9 @@ class Feeding(models.Model):
     meal = models.SmallIntegerField(choices=enums.Meals.CHOICES, default=0)
     description = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('horse', 'meal')
 
 
 class VetAppointment(models.Model):

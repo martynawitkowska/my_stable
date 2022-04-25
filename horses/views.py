@@ -82,11 +82,8 @@ class HorseDetailView(DetailView, LoginRequiredMixin):
         """
         Overridden get_context_data method to pass queries for view.
         """
-        # TODO When there is no data corresponding to user the queries are causing an error. JUST FIX IT!!!
         context = super(HorseDetailView, self).get_context_data(**kwargs)
-        context['meal1'] = models.Feeding.objects.all().filter(horse=self.object, meal=1).latest('date_created')
-        context['meal2'] = models.Feeding.objects.all().filter(horse=self.object, meal=2).latest('date_created')
-        context['meal3'] = models.Feeding.objects.all().filter(horse=self.object, meal=3).latest('date_created')
+        context['feeding'] = models.Feeding.objects.filter(horse=self.object)
         context['meal_names'] = enums.Meals.CHOICES
         return context
 
