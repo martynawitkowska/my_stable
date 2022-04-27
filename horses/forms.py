@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import modelformset_factory
 
 from . import models
 
@@ -31,7 +32,7 @@ class AddFeedingForm(forms.ModelForm):
 
     class Meta:
         model = models.Feeding
-        fields = ['meal', 'description', 'horse']
+        fields = ['breakfast', 'dinner', 'supper', 'horse']
 
     def __init__(self, *args, **kwargs):
         request = kwargs.pop('request', None)
