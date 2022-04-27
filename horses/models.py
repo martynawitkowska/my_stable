@@ -45,16 +45,14 @@ class Stable(models.Model):
 
 
 class Training(models.Model):
+    horse = models.ForeignKey('Horse', on_delete=models.PROTECT, null=True,)
     weekday = models.SmallIntegerField(choices=enums.WeekDays.CHOICES, default=0)
-    horse = models.ManyToManyField('Horse', related_name='Trainings')
-    horse_bit = models.ManyToManyField('BitsToUse', related_name='Trainings')
-    description = models.TextField()
-    trainer = models.CharField(max_length=64)
-    duration = models.DurationField()
-    hour = models.TimeField()
-
-    def __str__(self):
-        return self.weekday
+    horse_bit = models.ForeignKey('BitsToUse', related_name='Trainings', on_delete=models.PROTECT, null=True, blank=True)
+    description = models.TextField(blank=True)
+    trainer = models.CharField(max_length=64, default='Add trainer name')
+    raider = models.CharField(max_length=64, default='Add raider name')
+    duration = models.DurationField(null=True)
+    hour = models.TimeField(blank=True, null=True)
 
 
 class BitsToUse(models.Model):

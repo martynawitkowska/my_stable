@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, inlineformset_factory
 
 from . import models
 
@@ -41,3 +41,11 @@ class AddFeedingForm(forms.ModelForm):
             user = request.user
             self.fields['horse'].queryset = models.Horse.objects.filter(stable_owner=user)
 
+
+TrainingFormSet = inlineformset_factory(
+    models.Horse,
+    models.Training,
+    fields=('description', 'trainer', 'raider', 'duration', 'hour'),
+    extra=2,
+    can_delete=True
+)

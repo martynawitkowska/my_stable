@@ -53,9 +53,9 @@
                     <td class="p-3">{{ feeding.supper }}</td>
                 </tr>
             {% else %}
-                <div class="m-5">
-                    <a href="{% url 'horses:add_meal' %}" class="btn btn-success">Add feeding plan for this horse</a>
-                </div>
+                <tr class="m-5">
+                    <td><a href="{% url 'horses:add_meal' %}" class="btn btn-success">Add feeding plan for this horse</a></td>
+                </tr>
             {% endif %}
             </table>
         </div>
