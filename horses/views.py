@@ -112,3 +112,13 @@ class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
+
+class AddTrainingView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+    model = models.Training
+    fields = ('weekday', 'description', 'trainer', 'raider', 'duration', 'hour')
+    # form_class = forms.TrainingForm
+    template_name = 'horses/add_training.html'
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.add_training'
+
