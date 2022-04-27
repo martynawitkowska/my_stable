@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
@@ -12,7 +13,7 @@ from . import forms, models, enums
 @permission_required('horses.add_horse', login_url='users:login')
 def add_horse_view(request):
     """
-    Form to add a horse. User has to fill out all fileds in order to add a horse.
+    Form to add a horse. User has to fill out all filed in order to add a horse.
     When submit button is clicked user is redirected to homepage, this is
     supposed to be changed in near future. User should be redirected to a just added
     horse detail view in order to add more details like training, feeding etc.
@@ -83,8 +84,10 @@ class HorseDetailView(DetailView, LoginRequiredMixin):
         Overridden get_context_data method to pass queries for view.
         """
         context = super(HorseDetailView, self).get_context_data(**kwargs)
-        context['feeding'] = models.Feeding.objects.filter(horse=self.object)
-        context['meal_names'] = enums.Meals.CHOICES
+        try:
+            context['feeding'] = models.Feeding.objects.filter(horse=self.object).latest('date_created')
+        except models.Feeding.DoesNotExist:
+            context['feeding'] = None
         return context
 
 
@@ -93,12 +96,13 @@ class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     A form view for adding one meal. In select field user can only choose a horse
     that were added with a corresponding user ID.
     """
+    # form_class = forms.AddFeedingForm
     login_url = reverse_lazy('users:login')
     template_name = 'horses/add_meal.html'
     permission_required = 'horses.add_feeding'
-    form_class = forms.AddFeedingForm
     context_object_name = 'horse'
     success_url = reverse_lazy('home:home')
+    form_class = forms.AddFeedingForm
 
     def get_form_kwargs(self):
         """

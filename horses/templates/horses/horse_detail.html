@@ -12,7 +12,7 @@
                 <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
             </div>
         <div class="col me-3 p-3">
-            <table class="table table-success table-borderless table-hover">
+            <table class="table table-success table-bordered border-success">
                 <th class="p-3 h1 text-center" colspan="2">
                     {{ horse.name }}
                 </th>
@@ -31,24 +31,32 @@
             </table>
         </div>
         <div class="col">
-            <table class="m-3 p-5 text-center table table-borderless table-warning table-striped">
+            <table class="m-3 p-5 text-center table table-borderless table-success table-striped">
             <th class="p-3 h5">Feeding plan</th>
-            {% for meal in feeding %}
+            {% if feeding < 1 %}
                 <tr class="p-5 text-center">
-                    {% for number, meal_name in meal_names %}
-                        {% if number ==  meal.meal%}
-                        <td class="p-2 table-success h6">{{ meal_name }}</td>
-                        {% endif %}
-                    {% endfor %}
+                   <td class="h6">Breakfast</td>
                 </tr>
                 <tr class="p-2 text-center">
-                    <td class="p-3">{{ meal.description }}</td>
+                    <td class="p-3">{{ feeding.breakfast }}</td>
                 </tr>
-                {% empty %}
+                <tr class="p-5 text-center">
+                   <td class="h6">Dinner</td>
+                </tr>
+                <tr class="p-2 text-center">
+                    <td class="p-3">{{ feeding.dinner }}</td>
+                </tr>
+                <tr class="p-5 text-center">
+                   <td class="h6">Supper</td>
+                </tr>
+                <tr class="p-2 text-center">
+                    <td class="p-3">{{ feeding.supper }}</td>
+                </tr>
+            {% else %}
                 <div class="m-5">
-                    <a href="{% url 'horses:add_meal' %}" class="btn" style="background-color: olivedrab">Add feeding plan for this horse</a>
+                    <a href="{% url 'horses:add_meal' %}" class="btn btn-success">Add feeding plan for this horse</a>
                 </div>
-            {% endfor %}
+            {% endif %}
             </table>
         </div>
         </div>

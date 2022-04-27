@@ -64,12 +64,13 @@ class BitsToUse(models.Model):
 
 class Feeding(models.Model):
     horse = models.ForeignKey('Horse', on_delete=models.PROTECT, related_name='feeding_plans')
-    meal = models.SmallIntegerField(choices=enums.Meals.CHOICES, default=0)
-    description = models.TextField()
+    breakfast = models.TextField(null=True)
+    dinner = models.TextField(null=True)
+    supper = models.TextField(null=True)
     date_created = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        unique_together = ('horse', 'meal')
+    def __str__(self):
+        return f'{self.horse} feeding plan created {self.date_created}'
 
 
 class VetAppointment(models.Model):
