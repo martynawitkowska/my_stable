@@ -45,15 +45,16 @@ class AddFeedingForm(forms.ModelForm):
 class TrainingForm(forms.ModelForm):
 
     class Meta:
-        model = models.Training
-        exclude = ()
+        model = models.HorseTraining
+        exclude = ('name', )
 
-    TrainingFormSet = inlineformset_factory(
-        models.Horse,
-        models.Training,
-        fields=('weekday', 'description', 'trainer', 'raider', 'duration', 'hour'),
-        extra=6,
-        max_num=6,
-        absolute_max=7,
-        can_delete=True,
-    )
+
+TrainingFormSet = inlineformset_factory(
+    models.HorseTraining,
+    models.Training,
+    fields=('horse', 'weekday', 'description', 'trainer', 'raider', 'duration', 'hour'),
+    extra=2,
+    max_num=7,
+    absolute_max=7,
+    can_delete=True,
+)

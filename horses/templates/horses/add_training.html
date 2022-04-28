@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load crispy_forms_filters %}
 {% block title %}
 Add Training
 {% endblock %}
@@ -21,9 +21,11 @@ Add Training
                 {% endif %}
                 <h1>Add training</h1>
                 {% csrf_token %}
-
-                {{ form }}
-
+            {{ form|crispy }}
+                {{ formset.management_form|crispy }}
+            {% for form in formset %}
+                {{ form|crispy }}
+            {% endfor %}
                 <button type="submit" class="btn btn-success">Add Meal</button>
             </form>
         </div>

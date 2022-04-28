@@ -115,10 +115,27 @@ class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
 
 
 class AddTrainingView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
-    model = models.Training
-    fields = ('weekday', 'description', 'trainer', 'raider', 'duration', 'hour')
-    # form_class = forms.TrainingForm
+    model = models.HorseTraining
+    form_class = forms.TrainingForm
+    object = None
     template_name = 'horses/add_training.html'
     login_url = reverse_lazy('users:login')
     permission_required = 'horses.add_training'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        formset = forms.TrainingFormSet()
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        formset = forms.TrainingFormSet(self.request.POST)
+        if form.is_valid() and formset.is_valid():
+            return self.form_valid(form, formset)
+        else:
+            return self.form_invalid(form, formset)
 
