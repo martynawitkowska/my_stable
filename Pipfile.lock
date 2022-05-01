@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "6e6c08ded693bfae9ae091e044f9925b88a608597c1fb37e2c76928c792c937d"
+            "sha256": "3d3ae4a6f897d5eae56ae4e9161dd2f25ef94f807665f39aa88ddb1968633493"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -79,6 +79,14 @@
             ],
             "index": "pypi",
             "version": "==3.2.4"
+        },
+        "django-durationwidget2": {
+            "hashes": [
+                "sha256:269efc3cd6eec7c1da20df14938a379a0c11605a9eecf671ec8afa5956b41760",
+                "sha256:f0b1d1f2357a5ec3e5716a7f38c7ffd8638244fd3c89b0082cca2a95bad30014"
+            ],
+            "index": "pypi",
+            "version": "==1.0.6"
         },
         "iniconfig": {
             "hashes": [

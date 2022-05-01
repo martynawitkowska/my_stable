@@ -135,7 +135,12 @@ class AddTrainingView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         form = self.get_form(form_class)
         formset = forms.TrainingFormSet(self.request.POST)
         if form.is_valid() and formset.is_valid():
-            return self.form_valid(form, formset)
+            form.save()
+            for form_day in formset:
+                one_day = form_day.save(commit=False)
+                one_day.horse = models.HorseTraining.objects.latest('id')
+                one_day.save()
+            return redirect(reverse_lazy('home:home'))
         else:
-            return self.form_invalid(form, formset)
+            return super().form_invalid(form, formset)
 

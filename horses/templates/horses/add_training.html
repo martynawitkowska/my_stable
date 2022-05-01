@@ -9,7 +9,7 @@ Add Training
     <div class="row pb-4">
     </div>
     <div class="row justify-content-center mb-5">
-        <div class="col-4 mb-5 pb-5">
+        <div class="col-6 mb-5 pb-5">
             <form action="" method="POST" enctype="multipart/form-data" class="border border-success border-5 p-4">
                 {% if form.errors %}
                     {% for error in form.errors %}
@@ -23,10 +23,12 @@ Add Training
                 {% csrf_token %}
             {{ form|crispy }}
                 {{ formset.management_form|crispy }}
-            {% for form in formset %}
-                {{ form|crispy }}
-            {% endfor %}
-                <button type="submit" class="btn btn-success">Add Meal</button>
+                {% for form in formset %}
+                    <div class="border-bottom border-success border-2 p-3 mb-2">
+                        {{ form|crispy }}
+                    </div>
+                    {% endfor %}
+                <button type="submit" class="btn btn-success">Add Training</button>
             </form>
         </div>
     </div>
