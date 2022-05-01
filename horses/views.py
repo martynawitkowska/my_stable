@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.forms import modelformset_factory, formset_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
@@ -86,8 +85,11 @@ class HorseDetailView(DetailView, LoginRequiredMixin):
         context = super(HorseDetailView, self).get_context_data(**kwargs)
         try:
             context['feeding'] = models.Feeding.objects.filter(horse=self.object).latest('date_created')
-        except models.Feeding.DoesNotExist:
+            horse_training = models.HorseTraining.objects.filter(horse=self.object).latest('id')
+            context['trainings'] = models.Training.objects.filter(horse=horse_training)
+        except models.Feeding.DoesNotExist or models.Training.objects.DoesNotExist:
             context['feeding'] = None
+            context['trainings'] = None
         return context
 
 
