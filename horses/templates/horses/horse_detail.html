@@ -7,11 +7,11 @@
 
 {% block container %}
     <div class="container justify-content-center">
-        <div class="row p-5">
-            <div class="col">
-                <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
-            </div>
-        <div class="col me-3 p-3">
+    <section class="row p-5">
+        <section class="col">
+            <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
+        </section>
+        <section class="col me-3 p-3">
             <table class="table table-success table-bordered border-success">
                 <th class="p-3 h1 text-center" colspan="2">
                     {{ horse.name }}
@@ -21,7 +21,7 @@
                         {{ horse.birth_date }}
                     </td>
                 <tr>
-                    <td class="text-center p-3 h6" >
+                    <td class="text-center p-3 h6">
                         {{ horse.mother }}
                     </td>
                     <td class="text-center p-3 h6">
@@ -29,36 +29,86 @@
                     </td>
                 </tr>
             </table>
-        </div>
-        <div class="col">
+        </section>
+
+        <section class="col">
             <table class="m-3 p-5 text-center table table-borderless table-success table-striped">
-            <th class="p-3 h5">Feeding plan</th>
-            {% if feeding < 1 %}
-                <tr class="p-5 text-center">
-                   <td class="h6">Breakfast</td>
-                </tr>
-                <tr class="p-2 text-center">
-                    <td class="p-3">{{ feeding.breakfast }}</td>
-                </tr>
-                <tr class="p-5 text-center">
-                   <td class="h6">Dinner</td>
-                </tr>
-                <tr class="p-2 text-center">
-                    <td class="p-3">{{ feeding.dinner }}</td>
-                </tr>
-                <tr class="p-5 text-center">
-                   <td class="h6">Supper</td>
-                </tr>
-                <tr class="p-2 text-center">
-                    <td class="p-3">{{ feeding.supper }}</td>
-                </tr>
-            {% else %}
-                <div class="m-5">
-                    <a href="{% url 'horses:add_meal' %}" class="btn btn-success">Add feeding plan for this horse</a>
-                </div>
-            {% endif %}
+                <th class="p-3 h5">Feeding plan</th>
+                {% if feeding < 1 %}
+                    <tr class="m-5">
+                        <td><a href="{% url 'horses:add_meal' %}" class="btn btn-success">Add feeding plan for this
+                            horse</a></td>
+                    </tr>
+                {% else %}
+                    <tr class="p-5 text-center">
+                        <td class="h6">Breakfast</td>
+                    </tr>
+                    <tr class="p-2 text-center">
+                        <td class="p-3">{{ feeding.breakfast }}</td>
+                    </tr>
+                    <tr class="p-5 text-center">
+                        <td class="h6">Dinner</td>
+                    </tr>
+                    <tr class="p-2 text-center">
+                        <td class="p-3">{{ feeding.dinner }}</td>
+                    </tr>
+                    <tr class="p-5 text-center">
+                        <td class="h6">Supper</td>
+                    </tr>
+                    <tr class="p-2 text-center">
+                        <td class="p-3">{{ feeding.supper }}</td>
+                    </tr>
+                {% endif %}
             </table>
+        </section>
+        <section class="row m-5">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-inner p-5 m-5">
+                {% for training in trainings %}
+                    {% with forloop.counter0 as i %}
+                        <div class="carousel-item {% if i is 0 %}active{% endif %}">
+                        <div class="text-center">
+                            {% for number, day_name in weekdays %}
+                                {% if training.weekday == number %}
+                                    <h1>{{ day_name }}</h1>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col m-5">
+                                <h6>Trainer name:</h6>
+                                <p class="p-3">{{ training.trainer }}</p>
+                                <h6>Rider name:</h6>
+                                <p class="p-3">{{ training.raider }}</p>
+                                <h6>Duration:</h6>
+                                <p class="p-3">{{ training.duration }} hour</p>
+                                <h6>Time:</h6>
+                                <p class="p-3">{{ training.hour }}</p>
+                            </div>
+                             <div class="col m-5">
+                                 <h6>Training description</h6>
+                                <p>{{ training.description }}</p>
+                            </div>
+                        </div>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        </div>
-    </div>
+    </section>
+    </section>
 {% endblock %}
+
+
+
+

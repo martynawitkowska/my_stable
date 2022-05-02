@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'crispy_forms',
     'crispy_bootstrap5',
+    'durationwidget',
 
     # local apps
     'home.apps.HomeConfig',

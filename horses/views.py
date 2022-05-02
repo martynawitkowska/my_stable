@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.forms import modelformset_factory
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required, permission_required
@@ -86,8 +85,12 @@ class HorseDetailView(DetailView, LoginRequiredMixin):
         context = super(HorseDetailView, self).get_context_data(**kwargs)
         try:
             context['feeding'] = models.Feeding.objects.filter(horse=self.object).latest('date_created')
-        except models.Feeding.DoesNotExist:
+            horse_training = models.HorseTraining.objects.filter(horse=self.object).latest('id')
+            context['weekdays'] = enums.WeekDays.CHOICES
+            context['trainings'] = models.Training.objects.filter(horse=horse_training)
+        except models.Feeding.DoesNotExist or models.Training.objects.DoesNotExist:
             context['feeding'] = None
+            context['trainings'] = None
         return context
 
 
@@ -112,3 +115,35 @@ class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
+
+class AddTrainingView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+    model = models.HorseTraining
+    form_class = forms.TrainingForm
+    object = None
+    template_name = 'horses/add_training.html'
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.add_training'
+
+    def get(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        formset = forms.TrainingFormSet()
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def post(self, request, *args, **kwargs):
+        self.object = None
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        formset = forms.TrainingFormSet(self.request.POST)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            for form_day in formset:
+                one_day = form_day.save(commit=False)
+                one_day.horse = models.HorseTraining.objects.latest('id')
+                one_day.save()
+            return redirect(reverse_lazy('home:home'))
+        else:
+            return super().form_invalid(form, formset)
+

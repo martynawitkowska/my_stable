@@ -12,7 +12,8 @@
     <link rel="stylesheet" href="{% static 'styles/main.css' %}">
     {% endblock %}
     {% block scripts %}
-    <script src="{% static 'scripts/bootstrap.min.js' %}" defer async></script>
+    <script src="{% static 'scripts/bootstrap.min.js' %}" type="text/javascript" defer async></script>
+        <script src="{% static 'scripts/bootstrap.bundle.min.js' %}"></script>
     {% endblock %}
 </head>
 <body>

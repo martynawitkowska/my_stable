@@ -1,11 +1,18 @@
 from django import forms
-from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
+
+
+from durationwidget.widgets import TimeDurationWidget
 
 from . import models
 
 
-class DateInput(forms.DateInput):
+class DatePickerInput(forms.DateInput):
     input_type = 'date'
+
+
+class TimePickerInput(forms.TimeInput):
+    input_type = 'time'
 
 
 class AddHorseForm(forms.ModelForm):
@@ -14,7 +21,7 @@ class AddHorseForm(forms.ModelForm):
         model = models.Horse
         fields = ('name', 'mother', 'father', 'birth_date', 'age', 'stall',
                   'horse_owner', 'picture', 'farrier', 'vet')
-        widgets = {'birth_date': DateInput()}
+        widgets = {'birth_date': DatePickerInput}
 
     def __init__(self, *args, **kwargs):
         super(AddHorseForm, self).__init__(*args, **kwargs)
@@ -41,3 +48,19 @@ class AddFeedingForm(forms.ModelForm):
             user = request.user
             self.fields['horse'].queryset = models.Horse.objects.filter(stable_owner=user)
 
+
+class TrainingForm(forms.ModelForm):
+
+    class Meta:
+        model = models.HorseTraining
+        exclude = ('name', )
+
+
+TrainingFormSet = inlineformset_factory(
+    models.HorseTraining,
+    models.Training,
+    fields=('horse', 'weekday', 'description', 'trainer', 'raider', 'duration', 'hour'),
+    widgets={'duration': TimeDurationWidget(show_days=False, show_seconds=False) ,'hour': TimePickerInput},
+    extra=7,
+    can_delete_extra=True,
+)
