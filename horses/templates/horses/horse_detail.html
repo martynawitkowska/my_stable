@@ -61,44 +61,54 @@
                 {% endif %}
             </table>
         </section>
-    </section>
-    <section class="container">
-        <div class="row m-5">
-            <div class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner container">
-                    {% for training in trainings %}
-                        {% if forloop.first %}
-                            <div class="carousel-item active">
-
-                        {% else %}
-                            <div class="carousel-item">
-
-                        {% endif %}
-                    <div class="carousel-caption">
-
-                        <p>{{ training.weekday }}</p>
-                        <p>{{ training.description }}</p>
-                        <p>{{ training.trainer }}</p>
-                        <p>{{ training.raider }}</p>
-                        <p>{{ training.duration }}</p>
-                        <p>{{ training.hour }}</p>
-
-                    </div>
-                    </div>
-                    {% endfor %}
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions"
-                            data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                    </div>
-                </div>
+        <section class="row m-5">
+        <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-inner p-5 m-5">
+                {% for training in trainings %}
+                    {% with forloop.counter0 as i %}
+                        <div class="carousel-item {% if i is 0 %}active{% endif %}">
+                        <div class="text-center">
+                            {% for number, day_name in weekdays %}
+                                {% if training.weekday == number %}
+                                    <h1>{{ day_name }}</h1>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col m-5">
+                                <h6>Trainer name:</h6>
+                                <p class="p-3">{{ training.trainer }}</p>
+                                <h6>Rider name:</h6>
+                                <p class="p-3">{{ training.raider }}</p>
+                                <h6>Duration:</h6>
+                                <p class="p-3">{{ training.duration }} hour</p>
+                                <h6>Time:</h6>
+                                <p class="p-3">{{ training.hour }}</p>
+                            </div>
+                             <div class="col m-5">
+                                 <h6>Training description</h6>
+                                <p>{{ training.description }}</p>
+                            </div>
+                        </div>
+                        </div>
+                    {% endwith %}
+                {% endfor %}
             </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark"
+                    data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
     </section>
+    </section>
 {% endblock %}
+
+
+
+
