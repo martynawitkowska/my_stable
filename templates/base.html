@@ -17,12 +17,16 @@
     {% endblock %}
 </head>
 <body>
-{% include 'navbar.html' %}
+<div class="row">
+    {% include 'navbar.html' %}
+</div>
+<div class="row">
+    {% block container %}
 
-{% block container %}
-
-{% endblock %}
-
-{% include 'footer.html' %}
+    {% endblock %}
+</div>
+<div class="row">
+    {% include 'footer.html' %}
+</div>
 </body>
 </html>

@@ -50,6 +50,7 @@ class Training(models.Model):
     horse_bit = models.ForeignKey('BitsToUse', on_delete=models.PROTECT, null=True, blank=True)
     description = models.TextField(blank=True)
     trainer = models.CharField(max_length=64, default='Add trainer name')
+    # TODO: typo in word rider
     raider = models.CharField(max_length=64, default='Add raider name')
     duration = models.DurationField(null=True)
     hour = models.TimeField(blank=True, null=True)

@@ -23,6 +23,7 @@ def add_horse_view(request):
             horse = form.save(commit=False)
             horse.stable_owner = request.user
             horse.save()
+            # TODO narrow choice for vet and farrier to users in assigned user group
             # TODO after adding a horse user should be redirected to a corresponding horse detail view
             return redirect(reverse_lazy('home:home'))
     else:
@@ -147,3 +148,10 @@ class AddTrainingView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         else:
             return super().form_invalid(form, formset)
 
+
+# TODO: add update view for horse
+# TODO: add update view for meal
+# TODO: add update view for training
+# TODO: add shots for horse
+# TODO: assign farrier to horse
+# TODO: assign vet to horse
