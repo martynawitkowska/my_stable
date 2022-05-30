@@ -70,7 +70,7 @@ class StableView(LoginRequiredMixin, View):
             return redirect(reverse_lazy('horses:add_stable'))
 
 
-class HorseDetailView(DetailView, LoginRequiredMixin):
+class HorseDetailView(LoginRequiredMixin, DetailView):
     """
     This is a place where user can see details of horse. It is a work in progress page
     so queries are not perfect yet. Honestly it is a mess now.
@@ -95,7 +95,7 @@ class HorseDetailView(DetailView, LoginRequiredMixin):
         return context
 
 
-class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+class AddMealPlan(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     """
     A form view for adding one meal. In select field user can only choose a horse
     that were added with a corresponding user ID.
@@ -118,7 +118,7 @@ class AddMealPlan(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
         return kwargs
 
 
-class AddTrainingView(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.HorseTraining
     form_class = forms.TrainingForm
     object = None
