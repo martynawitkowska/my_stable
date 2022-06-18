@@ -1,9 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views import View
-from django.views.generic import DetailView, CreateView
+from django.views.generic import DetailView, CreateView, UpdateView
 
 from . import forms, models, enums
 
@@ -28,7 +28,7 @@ def add_horse_view(request):
             return redirect(reverse_lazy('home:home'))
     else:
         form = forms.AddHorseForm()
-    return render(request, 'horses/add_horse.html', {'form': form})
+    return render(request, 'horses/add_horse.html', {'form': form, 'form_name': 'Add horse', 'button_val': 'Add horse'})
 
 
 @login_required(login_url='users:login')
@@ -147,6 +147,24 @@ class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             return redirect(reverse_lazy('home:home'))
         else:
             return super().form_invalid(form, formset)
+
+
+class UpdateHorseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.change_horse'
+    model = models.Horse
+    form_class = forms.AddHorseForm
+    template_name = 'horses/add_horse.html'
+
+    def get_success_url(self):
+        return reverse_lazy('horses:horse_detail', kwargs={'slug': self.object.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateHorseView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Edit horse'
+        context['button_val'] = 'Save'
+        return context
+
 
 
 # TODO: add update view for horse

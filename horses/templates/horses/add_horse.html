@@ -20,12 +20,12 @@
                         </div>
                     {% endfor %}
                 {% endif %}
-                <h1>Add Horse</h1>
+                <h1>{{ form_name }}</h1>
                 {% csrf_token %}
 
                 {{ form|crispy }}
 
-                <button type="submit" class="btn btn-success">Add Horse</button>
+                <button type="submit" class="btn btn-success">{{ button_val }}</button>
             </form>
         </div>
     </div>

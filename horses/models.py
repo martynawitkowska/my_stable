@@ -23,8 +23,7 @@ class Horse(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name + self.mother + self.father + str(self.birth_date))
+        self.slug = slugify(self.name + self.mother + self.father + str(self.birth_date))
         super().save(*args, **kwargs)
 
 

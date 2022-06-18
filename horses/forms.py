@@ -60,7 +60,7 @@ TrainingFormSet = inlineformset_factory(
     models.HorseTraining,
     models.Training,
     fields=('horse', 'weekday', 'description', 'trainer', 'raider', 'duration', 'hour'),
-    widgets={'duration': TimeDurationWidget(show_days=False, show_seconds=False) ,'hour': TimePickerInput},
+    widgets={'duration': TimeDurationWidget(show_days=False, show_seconds=False), 'hour': TimePickerInput},
     extra=7,
     can_delete_extra=True,
 )

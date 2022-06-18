@@ -11,11 +11,11 @@
     </div>
     <div class="row">
         {% for horse in horses %}
-                <div class="col-md-3">
+                <div class="col-md-3 mb-5">
                     <div class="card mb-2 me-2 " style="width: 15rem;">
                         <img src="{{ horse.picture.url }}" class="card-img-top" style="width:auto ;height: 350px; object-fit: cover; object-position: center;" alt="Picture of {{ horse.name }}">
                         <div class="card-footer d-flex flex-column bg-success">
-                            <a href="{% url 'horses:horse_detail' slug=horse.slug%}" class="btn btn-lg">{{ horse.name }}</a>
+                            <a href="{% url 'horses:horse_detail' slug=horse.slug %}" class="btn btn-lg">{{ horse.name }}</a>
                         </div>
                     </div>
             </div>

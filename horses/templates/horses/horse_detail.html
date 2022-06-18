@@ -9,7 +9,15 @@
     <div class="container justify-content-center">
         <div class="row p-5">
             <section class="col">
-                <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">
+                <div class="col-md-3 mb-5">
+                    <div class="card mb-2 me-2 " style="width: 15rem;">
+                        <img src="{{ horse.picture.url }}" class="card-img-top" style="width:auto ;height: 350px; object-fit: cover; object-position: center;" alt="Picture of {{ horse.name }}">
+                        <div class="card-footer d-flex flex-column bg-success">
+                            <a href="{% url 'horses:change_horse' slug=horse.slug %}" class="btn btn-lg">Edit {{ horse.name }} information</a>
+                        </div>
+                    </div>
+{#                <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">#}
+{#                <a href="{% url 'horses:change_horse' slug=horse.slug%}" class="btn btn-success">Edit horse information</a>#}
             </section>
             <section class="col me-3 p-3">
                 <table class="table table-success table-bordered border-success">
