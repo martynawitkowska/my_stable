@@ -150,6 +150,10 @@ class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
 
 
 class UpdateHorseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """
+    Update view for changing horse data in database. Overridden get_success_url to redirect user to a dedicated detail
+    view of horse + context data for shortening the amount of code.
+    """
     login_url = reverse_lazy('users:login')
     permission_required = 'horses.change_horse'
     model = models.Horse
@@ -166,8 +170,16 @@ class UpdateHorseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return context
 
 
+class MealUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.change_feeding'
+    model = models.Feeding
+    form_class = forms.AddFeedingForm
 
-# TODO: add update view for horse
+    # def get_context_data(self, **kwargs):
+
+
+
 # TODO: add update view for meal
 # TODO: add update view for training
 # TODO: add shots for horse

@@ -16,8 +16,6 @@
                             <a href="{% url 'horses:change_horse' slug=horse.slug %}" class="btn btn-lg">Edit {{ horse.name }} information</a>
                         </div>
                     </div>
-{#                <img class="float-start image" src="{{ horse.picture.url }}" alt="Picture of {{ horse.name }}">#}
-{#                <a href="{% url 'horses:change_horse' slug=horse.slug%}" class="btn btn-success">Edit horse information</a>#}
             </section>
             <section class="col me-3 p-3">
                 <table class="table table-success table-bordered border-success">
@@ -41,7 +39,11 @@
 
             <div class="col">
                 <table class="m-3 p-5 text-center table table-borderless table-success table-striped">
-                    <th class="p-3 h5">Feeding plan</th>
+                    <th class="p-3 h5">Feeding plan
+                        {% if feeding %}
+                            <a href="{% url 'horses:change_meal' meal_id=feeding.id %}" class="btn btn-success">Edit meal</a>
+                        {% endif %}
+                    </th>
                     {% if feeding < 1 %}
                         <tr class="m-5">
                             <td><a href="{% url 'horses:add_meal' %}" class="btn btn-success">Add feeding plan for this

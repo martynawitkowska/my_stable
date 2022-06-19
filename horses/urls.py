@@ -10,6 +10,7 @@ urlpatterns = [
     path('add-stable', views.add_stable_view, name='add_stable'),
     path('stable/<int:user_id>', views.StableView.as_view(), name='stable'),
     path('add-meal', views.AddMealPlan.as_view(), name='add_meal'),
+    path('edit-meal/<int:meal_id>', views.MealUpdateView.as_view(), name='change_meal'),
     path('add-training', views.AddTrainingView.as_view(), name='add_training'),
     path('<slug:slug>', views.HorseDetailView.as_view(), name='horse_detail'),
 ]
