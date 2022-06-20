@@ -31,6 +31,27 @@ def add_horse_view(request):
     return render(request, 'horses/add_horse.html', {'form': form, 'form_name': 'Add horse', 'button_val': 'Add horse'})
 
 
+class UpdateHorseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """
+    Update view for changing horse data in database. Overridden get_success_url to redirect user to a dedicated detail
+    view of horse + context data for shortening the amount of code.
+    """
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.change_horse'
+    model = models.Horse
+    form_class = forms.AddHorseForm
+    template_name = 'horses/add_horse.html'
+
+    def get_success_url(self):
+        return reverse_lazy('horses:horse_detail', kwargs={'slug': self.object.slug})
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateHorseView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Edit horse'
+        context['button_val'] = 'Save'
+        return context
+
+
 @login_required(login_url='users:login')
 @permission_required('horses.add_stable', raise_exception=True)
 def add_stable_view(request):
@@ -100,7 +121,6 @@ class AddMealPlan(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     A form view for adding one meal. In select field user can only choose a horse
     that were added with a corresponding user ID.
     """
-    # form_class = forms.AddFeedingForm
     login_url = reverse_lazy('users:login')
     template_name = 'horses/add_meal.html'
     permission_required = 'horses.add_feeding'
@@ -112,6 +132,7 @@ class AddMealPlan(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         context = super(AddMealPlan, self).get_context_data(**kwargs)
         context['form_name'] = 'Add feeding plan'
         context['button_val'] = 'Submit'
+        return context
 
     def get_form_kwargs(self):
         """
@@ -121,6 +142,31 @@ class AddMealPlan(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['request'] = self.request
         return kwargs
+
+
+class UpdateMealView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.change_feeding'
+    model = models.Feeding
+    fields = ['breakfast', 'dinner', 'supper']
+    template_name = 'horses/add_meal.html'
+    success_url = reverse_lazy('home:home')
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateMealView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Edit feeding plan'
+        context['button_val'] = 'Save'
+        return context
+
+    # def get_form_kwargs(self):
+    #     """
+    #     Overridden get_form_kwargs method to pass request to form in order to
+    #     provide queryset information.
+    #     """
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs['request'] = self.request
+    #     return kwargs
 
 
 class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
@@ -153,51 +199,6 @@ class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
         else:
             return super().form_invalid(form, formset)
 
-
-class UpdateHorseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    """
-    Update view for changing horse data in database. Overridden get_success_url to redirect user to a dedicated detail
-    view of horse + context data for shortening the amount of code.
-    """
-    login_url = reverse_lazy('users:login')
-    permission_required = 'horses.change_horse'
-    model = models.Horse
-    form_class = forms.AddHorseForm
-    template_name = 'horses/add_horse.html'
-
-    def get_success_url(self):
-        return reverse_lazy('horses:horse_detail', kwargs={'slug': self.object.slug})
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateHorseView, self).get_context_data(**kwargs)
-        context['form_name'] = 'Edit horse'
-        context['button_val'] = 'Save'
-        return context
-
-
-class UpdateMealView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
-    login_url = reverse_lazy('users:login')
-    permission_required = 'horses.change_feeding'
-    model = models.Feeding
-    form = forms.AddFeedingForm
-    template_name = 'horses/add_meal.html'
-    context_object_name = 'feeding'
-    success_url = reverse_lazy('home:home')
-
-    def get_context_data(self, **kwargs):
-        context = super(UpdateMealView, self).get_context_data(**kwargs)
-        context['form_name'] = 'Edit feeding plan'
-        context['button_val'] = 'Save'
-        return context
-
-    def get_form_kwargs(self):
-        """
-        Overridden get_form_kwargs method to pass request to form in order to
-        provide queryset information.
-        """
-        kwargs = super().get_form_kwargs()
-        kwargs['request'] = self.request
-        return kwargs
 
 # TODO: add update view for meal
 # TODO: add update view for training
