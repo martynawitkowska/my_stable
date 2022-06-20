@@ -108,6 +108,11 @@ class AddMealPlan(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     success_url = reverse_lazy('home:home')
     form_class = forms.AddFeedingForm
 
+    def get_context_data(self, **kwargs):
+        context = super(AddMealPlan, self).get_context_data(**kwargs)
+        context['form_name'] = 'Add feeding plan'
+        context['button_val'] = 'Submit'
+
     def get_form_kwargs(self):
         """
         Overridden get_form_kwargs method to pass request to form in order to
@@ -170,15 +175,29 @@ class UpdateHorseView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         return context
 
 
-class MealUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+class UpdateMealView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     login_url = reverse_lazy('users:login')
     permission_required = 'horses.change_feeding'
     model = models.Feeding
-    form_class = forms.AddFeedingForm
+    form = forms.AddFeedingForm
+    template_name = 'horses/add_meal.html'
+    context_object_name = 'feeding'
+    success_url = reverse_lazy('home:home')
 
-    # def get_context_data(self, **kwargs):
+    def get_context_data(self, **kwargs):
+        context = super(UpdateMealView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Edit feeding plan'
+        context['button_val'] = 'Save'
+        return context
 
-
+    def get_form_kwargs(self):
+        """
+        Overridden get_form_kwargs method to pass request to form in order to
+        provide queryset information.
+        """
+        kwargs = super().get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
 
 # TODO: add update view for meal
 # TODO: add update view for training
