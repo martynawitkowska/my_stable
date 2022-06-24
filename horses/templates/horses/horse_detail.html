@@ -78,6 +78,7 @@
                  data-bs-ride="carousel">
                 <div class="carousel-inner">
                     {% for training in trainings %}
+                        {{ training.id }}
                         {% with forloop.counter0 as i %}
                             <div class="carousel-item {% if i is 0 %}active{% endif %}">
                                 <div class="text-center">

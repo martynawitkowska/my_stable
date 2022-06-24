@@ -159,15 +159,6 @@ class UpdateMealView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
         context['button_val'] = 'Save'
         return context
 
-    # def get_form_kwargs(self):
-    #     """
-    #     Overridden get_form_kwargs method to pass request to form in order to
-    #     provide queryset information.
-    #     """
-    #     kwargs = super().get_form_kwargs()
-    #     kwargs['request'] = self.request
-    #     return kwargs
-
 
 class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = models.HorseTraining
@@ -200,7 +191,35 @@ class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
             return super().form_invalid(form, formset)
 
 
-# TODO: add update view for meal
+class UpdateTrainingView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.change_training'
+    model = models.HorseTraining
+    object = None
+    form_class = forms.TrainingForm
+    formset_class = forms.TrainingFormSet
+    template_name = 'horses/add_training.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(UpdateTrainingView, self).get_context_data(**kwargs)
+        if self.request.method == 'POST':
+            context['formset'] = forms.TrainingFormSet(self.request.POST, instance=self.object)
+        else:
+            context['formset'] = forms.TrainingFormSet(instance=self.object)
+        print(context)
+        return context
+
+    # def get(self, request, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     form_class = self.get_form_class()
+    #     form = self.get_form(form_class)
+    #     formset = forms.TrainingFormSet()
+    #     print(self.get_context_data(form=form))
+    #     for form in formset:
+    #         print(form)
+    #     return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+
 # TODO: add update view for training
 # TODO: add shots for horse
 # TODO: assign farrier to horse
