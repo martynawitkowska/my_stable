@@ -108,6 +108,7 @@ class HorseDetailView(LoginRequiredMixin, DetailView):
         try:
             context['feeding'] = models.Feeding.objects.filter(horse=self.object).latest('date_created')
             horse_training = models.HorseTraining.objects.filter(horse=self.object).latest('id')
+            context['horse_training'] = horse_training
             context['weekdays'] = enums.WeekDays.CHOICES
             context['trainings'] = models.Training.objects.filter(horse=horse_training)
         except models.Feeding.DoesNotExist or models.Training.objects.DoesNotExist:

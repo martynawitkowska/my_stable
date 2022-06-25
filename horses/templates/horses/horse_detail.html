@@ -78,7 +78,6 @@
                  data-bs-ride="carousel">
                 <div class="carousel-inner">
                     {% for training in trainings %}
-                        {{ training.id }}
                         {% with forloop.counter0 as i %}
                             <div class="carousel-item {% if i is 0 %}active{% endif %}">
                                 <div class="text-center">
@@ -118,6 +117,9 @@
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
+            <div>
+                <a href="{% url 'horses:change_training' pk=horse_training.id %}" class="btn btn-success carousel-indicators">Edit training</a>
+            </div>
             </div>
         </div>
     </div>
