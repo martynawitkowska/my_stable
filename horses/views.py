@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth.decorators import login_required, permission_required
@@ -169,6 +170,11 @@ class AddTrainingView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     login_url = reverse_lazy('users:login')
     permission_required = 'horses.add_training'
 
+    def get_context_data(self, **kwargs):
+        context = super(AddTrainingView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Add training'
+        context['button_val'] = 'Add training'
+
     def get(self, request, *args, **kwargs):
         self.object = None
         form_class = self.get_form_class()
@@ -203,6 +209,8 @@ class UpdateTrainingView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
 
     def get_context_data(self, **kwargs):
         context = super(UpdateTrainingView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Edit training'
+        context['button_val'] = 'Save'
         if self.request.method == 'POST':
             context['formset'] = forms.TrainingFormSet(self.request.POST, instance=self.object)
         else:
@@ -210,15 +218,18 @@ class UpdateTrainingView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
         print(context)
         return context
 
-    # def get(self, request, *args, **kwargs):
-    #     self.object = self.get_object()
-    #     form_class = self.get_form_class()
-    #     form = self.get_form(form_class)
-    #     formset = forms.TrainingFormSet()
-    #     print(self.get_context_data(form=form))
-    #     for form in formset:
-    #         print(form)
-    #     return self.render_to_response(self.get_context_data(form=form, formset=formset))
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+
+        with transaction.atomic():
+            self.object = form.save()
+
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
+
+        return redirect('home:home')
 
 
 # TODO: add update view for training
