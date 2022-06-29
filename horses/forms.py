@@ -1,6 +1,8 @@
-from django import forms
-from django.forms import inlineformset_factory
+import os
 
+from django import forms
+from django.contrib.auth import get_user_model
+from django.forms import inlineformset_factory
 
 from durationwidget.widgets import TimeDurationWidget
 
@@ -16,6 +18,7 @@ class TimePickerInput(forms.TimeInput):
 
 
 class AddHorseForm(forms.ModelForm):
+    User = get_user_model()
 
     class Meta:
         model = models.Horse
@@ -26,6 +29,8 @@ class AddHorseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddHorseForm, self).__init__(*args, **kwargs)
         self.fields['picture'].required = False
+        self.fields['vet'].queryset = self.User.objects.filter(groups__name=os.environ.get('DJ_GROUP_VETERINARIANS'))
+        self.fields['farrier'].queryset = self.User.objects.filter(groups__name=os.environ.get('DJ_GROUP_FARRIERS'))
 
 
 class AddStableForm(forms.ModelForm):
