@@ -14,4 +14,5 @@ urlpatterns = [
     path('add-training', views.AddTrainingView.as_view(), name='add_training'),
     path('edit-training/<int:pk>', views.UpdateTrainingView.as_view(), name='change_training'),
     path('<slug:slug>', views.HorseDetailView.as_view(), name='horse_detail'),
+    path('add-vaccine-date', views.AddVaccineDateView.as_view(), name='add_vaccine'),
 ]

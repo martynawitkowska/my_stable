@@ -22,6 +22,8 @@ def add_permissions(sender, **kwargs):
     change_horse = Permission.objects.get(codename='change_horse')
     add_feeding = Permission.objects.get(codename='add_feeding')
     change_feeding = Permission.objects.get(codename='change_feeding')
+    add_vaccinesdates = Permission.objects.get(codename='add_vaccinesdates')
+    change_vaccinesdates = Permission.objects.get(codename='change_vaccinesdates')
     view_farrierappointment = Permission.objects.get(codename='view_farrierappointment')
     view_vetappointment = Permission.objects.get(codename='view_vetappointment')
     view_stable = Permission.objects.get(codename='view_stable')
@@ -37,6 +39,8 @@ def add_permissions(sender, **kwargs):
         change_training,
         add_feeding,
         change_feeding,
+        add_vaccinesdates,
+        change_vaccinesdates,
         view_vetappointment,
         view_farrierappointment,
     ]

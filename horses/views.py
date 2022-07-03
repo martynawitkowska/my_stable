@@ -231,6 +231,19 @@ class UpdateTrainingView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView
         return redirect('home:home')
 
 
+class AddVaccineDateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    login_url = reverse_lazy('users:login')
+    permission_required = 'horses.add_vaccinesdates'
+    model = models.VaccinesDates
+    form_class = forms.AddVaccineDate
+    template_name = 'horses/add_vaccine_date.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AddVaccineDateView, self).get_context_data(**kwargs)
+        context['form_name'] = 'Add Vaccine Date'
+        context['button_val'] = 'Submit'
+        return context
+
 # TODO: add shots for horse
-# TODO: assign farrier to horse
-# TODO: assign vet to horse
+
+
