@@ -70,11 +70,12 @@ TrainingFormSet = inlineformset_factory(
     can_delete_extra=True,
 )
 
-class AddVaccineDate(forms.ModelForm):
+
+class AddVaccineDateForm(forms.ModelForm):
 
     class Meta:
         model = models.VaccinesDates
-        fields = ['shot', 'horse', 'date']
+        fields = ['horse', 'shot', 'date']
         widgets = {
             'date': DatePickerInput,
         }
