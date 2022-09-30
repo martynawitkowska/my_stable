@@ -9,6 +9,9 @@ backend/staticfiles/*
 backend/static/.DS_Store
 backend/media/*
 static_do_koncowego_projektu
+.DS_Store
+media/.DS_Store
+static/.DS_Store
 
 backend/env/.env
 
