@@ -5,9 +5,10 @@
 venv
 db.sqlite3
 
-staticfiles/*
-media/images
+backend/staticfiles/*
+backend/static/.DS_Store
+backend/media/*
 static_do_koncowego_projektu
 
-env/.env
+backend/env/.env
 

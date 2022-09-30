@@ -122,7 +122,23 @@
             </div>
             </div>
         <div>
-            <a href="{% url 'horses:add_vaccine_date'%}" class="btn btn-success">Add vaccine date</a>
+        <table>
+        <th>
+            <tr>
+                <td>Date</td>
+                <td>Vaccine</td>
+            </tr>
+        </th>
+        <tr>
+            {% for v_date in vaccine_dates %}
+                <td>{{ v_date.date }}</td>
+                <td>{{ v_date.shot.name }}</td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <td><a href="{% url 'horses:add_vaccine_date'%}" class="btn btn-success">Add vaccine date</a></td>
+        </tr>
+        </table>
         </div>
         </div>
     </div>

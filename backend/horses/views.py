@@ -111,6 +111,7 @@ class HorseDetailView(LoginRequiredMixin, DetailView):
             context['horse_training'] = horse_training
             context['weekdays'] = enums.WeekDays.CHOICES
             context['trainings'] = models.Training.objects.filter(horse=horse_training)
+            context['vaccine_dates'] = models.VaccinesDates.objects.prefetch_related('shot__vaccines').filter(horse=self.object)
         except models.Feeding.DoesNotExist or models.Training.objects.DoesNotExist:
             context['feeding'] = None
             context['trainings'] = None

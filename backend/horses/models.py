@@ -97,6 +97,7 @@ class Vaccines(models.Model):
 
 
 class VaccinesDates(models.Model):
+    # TODO: change many to many to a foreign key on shot and horse
     shot = models.ManyToManyField('Vaccines', related_name='vaccines')
     horse = models.ManyToManyField('Horse', related_name='horses')
     date = models.DateField()
