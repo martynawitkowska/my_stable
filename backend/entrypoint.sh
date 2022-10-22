@@ -12,6 +12,8 @@ then
 
 fi
 
+python manage.py flush --no-input
+python manage.py loaddata fixtures/data.json
 python manage.py migrate
 
 exec "$@"
